@@ -2,14 +2,15 @@ package main
 
 import (
 	"fmt"
-	kino "prague-kino/cinemas"
+
+	"prague-kino/cinemas/aero"
 	"prague-kino/lib"
 
 	"github.com/gocolly/colly/v2"
 )
 
 func main() {
-	var aero kino.AeroScraper
+	var aero aero.AeroScraper
 
 	screenings := scrapeCinema(aero)
 	fmt.Println("Kino Aero screenings:")

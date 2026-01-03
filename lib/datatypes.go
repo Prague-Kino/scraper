@@ -5,6 +5,12 @@ import (
 	"time"
 )
 
+type Kino struct {
+	Name       string
+	BaseDomain string
+	ProgramURL string
+}
+
 type Film struct {
 	Title   string
 	Year    int
