@@ -6,6 +6,13 @@ import (
 	"time"
 )
 
+var cinemaNameFilters = []string{
+	"Cinema",
+	"Great hall",
+	"Small hall",
+	"Third hall",
+}
+
 // Converts a program id string in the format program-day-07-06-2026 to time.Time
 func idToDate(id string) (time.Time, error) {
 	datePart := strings.TrimPrefix(id, "program-day-")
@@ -29,4 +36,22 @@ func crownsToInt(s string) (int, error) {
 		return 0, err
 	}
 	return value, nil
+}
+
+// Removes extra spaces and linebreaks from a string
+func Squish(s string) string {
+	return strings.Join(strings.Fields(s), " ")
+}
+
+// Filters known substrings from cinema names so that only the main name remains
+//
+// Example: "Aero Cinema" -> "Aero"
+//
+// Example: "Lucerna Great Hall" -> "Lucerna"
+func filterCinemaName(name string) string {
+	s := name
+	for _, filter := range cinemaNameFilters {
+		s = strings.ReplaceAll(s, filter, "")
+	}
+	return s
 }
