@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"prague-kino/cinemas/aero"
+	aero "prague-kino/cinemas/aerokina"
 	"prague-kino/lib"
 
 	"github.com/gocolly/colly/v2"
@@ -13,7 +13,7 @@ func main() {
 	var aero aero.AeroScraper
 
 	screenings := scrapeCinema(aero)
-	fmt.Println("Kino Aero screenings:")
+	fmt.Println("Aerokina screenings:")
 	fmt.Println(screenings)
 }
 

@@ -1,7 +1,6 @@
 package aero
 
 import (
-	"fmt"
 	"time"
 
 	"prague-kino/lib"
@@ -12,7 +11,7 @@ import (
 type AeroScraper struct{}
 
 func (AeroScraper) Kino() lib.Kino {
-	return Aero
+	return *Aero
 }
 
 func (AeroScraper) Register(c *colly.Collector, screenings *[]lib.Screening) {
@@ -35,33 +34,28 @@ func scrapeAeroProgram(e *colly.HTMLElement, screenings *[]lib.Screening) {
 
 	// individual screening data
 	e.ForEach(".program__info-row", func(i int, row *colly.HTMLElement) {
-		movieName := row.ChildText(".program__movie-name")
-		programHour := row.ChildText(".program__hour")
-		price := row.ChildText(".program__price form button.program__ticket.program__ticket--kino-aero span")
-		cost, _ := crownsToInt(price)
-		fmt.Println(price)
-
-		projectionId := row.ChildAttr(".program__info-row-left-top", "data-projection")
-		fmt.Println("projection id: ", projectionId)
-
-		var film lib.Film
-		film = lib.Film{
-			Title: movieName,
-		}
-
-		screening := lib.Screening{
-			Film: film,
-			Kino: KINO_NAME,
-			Date: screeningDate,
-			Cost: cost,
-			Time: programHour,
-		}
-		fmt.Println(screening)
+		screening := parseScreening(row, screeningDate)
 		*screenings = append(*screenings, screening)
 	})
 }
 
-// Kino Aero program:
+// Parses a single screening row and returns a Screening struct
+func parseScreening(row *colly.HTMLElement, date time.Time) lib.Screening {
+	movieName := row.ChildText(".program__movie-name")
+	programHour := row.ChildText(".program__hour")
+	cinemaName := row.ChildText(".program__place--desktop")
+	price := row.ChildText(".program__price form")
+
+	cinemaName = filterCinemaName(Squish(cinemaName))
+	cost, err := crownsToInt(price)
+	if err != nil {
+		cost = 0
+	}
+
+	film := lib.Film{Title: movieName}
+	return lib.NewScreening(film, cinemaName, date, programHour, cost)
+}
+
 // <div #program> contains all the screening
 //
 //	<div .program> program for a single day - sometimes has a single screening or multiple screenings

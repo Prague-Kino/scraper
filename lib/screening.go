@@ -5,19 +5,6 @@ import (
 	"time"
 )
 
-type Kino struct {
-	Name       string
-	BaseDomain string
-	ProgramURL string
-}
-
-type Film struct {
-	Title   string
-	Year    int
-	Runtime int
-	Country string
-}
-
 type Screening struct {
 	Film Film
 	Kino string
@@ -28,11 +15,21 @@ type Screening struct {
 
 func (s Screening) String() string {
 	return fmt.Sprintf(
-		"{ %s \t| %s @ %s for %d Kč | %s }\n",
+		"{ %-10s %5s | %-25s @ %-6s for %4d Kč }\n",
+		s.Kino,
 		s.Date.Format("01/02"),
 		s.Film.Title,
 		s.Time,
 		s.Cost,
-		s.Kino,
 	)
+}
+
+func NewScreening(film Film, kino string, date time.Time, timeStr string, cost int) Screening {
+	return Screening{
+		Film: film,
+		Kino: kino,
+		Date: date,
+		Time: timeStr,
+		Cost: cost,
+	}
 }
