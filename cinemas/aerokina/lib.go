@@ -1,7 +1,6 @@
 package aero
 
 import (
-	"strconv"
 	"strings"
 	"time"
 )
@@ -23,24 +22,6 @@ func idToDate(id string) (time.Time, error) {
 	}
 
 	return t, nil
-}
-
-// Converts a price string in crowns to an int
-//
-// Example: "190 Kč" -> 190
-func crownsToInt(s string) (int, error) {
-	cleaned := strings.TrimSpace(strings.TrimSuffix(s, "Kč"))
-
-	value, err := strconv.Atoi(cleaned)
-	if err != nil {
-		return 0, err
-	}
-	return value, nil
-}
-
-// Removes extra spaces and linebreaks from a string
-func Squish(s string) string {
-	return strings.Join(strings.Fields(s), " ")
 }
 
 // Filters known substrings from cinema names so that only the main name remains

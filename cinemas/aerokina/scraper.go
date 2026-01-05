@@ -44,16 +44,16 @@ func parseScreening(row *colly.HTMLElement, date time.Time) lib.Screening {
 	movieName := row.ChildText(".program__movie-name")
 	programHour := row.ChildText(".program__hour")
 	cinemaName := row.ChildText(".program__place--desktop")
-	price := row.ChildText(".program__price form")
+	priceString := row.ChildText(".program__price form")
 
-	cinemaName = filterCinemaName(Squish(cinemaName))
-	cost, err := crownsToInt(price)
+	cinemaName = filterCinemaName(lib.Squish(cinemaName))
+	price, err := lib.CrownsToInt(priceString)
 	if err != nil {
-		cost = 0
+		price = 0
 	}
 
 	film := lib.Film{Title: movieName}
-	return lib.NewScreening(film, cinemaName, date, programHour, cost)
+	return lib.NewScreening(film, cinemaName, date, programHour, price)
 }
 
 // <div #program> contains all the screening
