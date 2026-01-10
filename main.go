@@ -5,6 +5,7 @@ import (
 
 	aero "prague-kino/cinemas/aerokina"
 	ed "prague-kino/cinemas/edison"
+	pon "prague-kino/cinemas/ponrepo"
 	"prague-kino/lib"
 
 	"github.com/gocolly/colly/v2"
@@ -20,6 +21,11 @@ func main() {
 	fmt.Println("Edison screenings:")
 	screenings2 := scrapeCinema(edison)
 	fmt.Println(screenings2)
+
+	var ponrepo pon.PonrepoScraper
+	fmt.Println("Ponrepo screenings:")
+	screenings3 := scrapeCinema(ponrepo)
+	fmt.Println(screenings3)
 }
 
 func scrapeCinema(scraper lib.CinemaScraper) []lib.Screening {
