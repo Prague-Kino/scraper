@@ -3,10 +3,10 @@ package main
 import (
 	"fmt"
 
-	aero "prague-kino/cinemas/aerokina"
-	ed "prague-kino/cinemas/edison"
-	pon "prague-kino/cinemas/ponrepo"
-	"prague-kino/lib"
+	aero "github.com/Prague-Kino/scraper/cinemas/aerokina"
+	ed "github.com/Prague-Kino/scraper/cinemas/edison"
+	pon "github.com/Prague-Kino/scraper/cinemas/ponrepo"
+	"github.com/Prague-Kino/scraper/lib"
 
 	"github.com/gocolly/colly/v2"
 )

@@ -3,7 +3,7 @@ package aero
 import (
 	"time"
 
-	"prague-kino/lib"
+	"github.com/Prague-Kino/scraper/lib"
 
 	"github.com/gocolly/colly/v2"
 )

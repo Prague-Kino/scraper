@@ -1,4 +1,4 @@
-module prague-kino
+module github.com/Prague-Kino/scraper
 
 go 1.25.1
 

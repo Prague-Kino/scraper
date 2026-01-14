@@ -4,7 +4,7 @@
 package aero
 
 import (
-	"prague-kino/lib"
+	"github.com/Prague-Kino/scraper/lib"
 )
 
 const (
