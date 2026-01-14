@@ -1,6 +1,6 @@
 package ponrepo
 
-import "prague-kino/lib"
+import "github.com/Prague-Kino/scraper/lib"
 
 var Ponrepo = lib.Kino{
 	Name:       "Ponrepo",

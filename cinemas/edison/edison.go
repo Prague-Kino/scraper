@@ -1,7 +1,7 @@
 package edison
 
 import (
-	"prague-kino/lib"
+	"github.com/Prague-Kino/scraper/lib"
 )
 
 var Edison = lib.Kino{
