@@ -1,3 +1,5 @@
+github.com/Prague-Kino/cast v0.0.0-20260118211812-734b0e58f5b8 h1:RQgdjK8yI6W5ujF8/H3wLAc+jW4QCvFvNv82OfUXbyU=
+github.com/Prague-Kino/cast v0.0.0-20260118211812-734b0e58f5b8/go.mod h1:v8bq8A5RyqauGVkATitDogpH+Z97fgwyzKxyesVIF08=
 github.com/PuerkitoBio/goquery v1.11.0 h1:jZ7pwMQXIITcUXNH83LLk+txlaEy6NVOfTuP43xxfqw=
 github.com/PuerkitoBio/goquery v1.11.0/go.mod h1:wQHgxUOU3JGuj3oD/QFfxUdlzW6xPHfqyHre6VMY4DQ=
 github.com/andybalholm/cascadia v1.3.3 h1:AG2YHrzJIm4BZ19iwJ/DAua6Btl3IwJX+VI4kktS1LM=

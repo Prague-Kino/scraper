@@ -3,24 +3,24 @@ package ponrepo
 import (
 	"time"
 
-	"github.com/Prague-Kino/scraper/models"
+	"github.com/Prague-Kino/cast/cast"
 
 	"github.com/gocolly/colly/v2"
 )
 
 type PonrepoScraper struct{}
 
-func (PonrepoScraper) Kino() models.Kino {
+func (PonrepoScraper) Kino() cast.Kino {
 	return Ponrepo
 }
 
-func (PonrepoScraper) Register(c *colly.Collector, screenings *[]models.Screening) {
+func (PonrepoScraper) Register(c *colly.Collector, screenings *[]cast.Screening) {
 	c.OnHTML("#events-list .event-group", func(e *colly.HTMLElement) {
 		scrapeProgram(e, screenings)
 	})
 }
 
-func scrapeProgram(e *colly.HTMLElement, screenings *[]models.Screening) {
+func scrapeProgram(e *colly.HTMLElement, screenings *[]cast.Screening) {
 	date := parseDate(e.Attr("id"))
 
 	e.ForEach(".event-item", func(i int, h *colly.HTMLElement) {
@@ -28,20 +28,20 @@ func scrapeProgram(e *colly.HTMLElement, screenings *[]models.Screening) {
 	})
 }
 
-func scrapeScreening(e *colly.HTMLElement, date time.Time) models.Screening {
+func scrapeScreening(e *colly.HTMLElement, date time.Time) cast.Screening {
 	time := e.ChildText(".event-item__date")
 	director := e.ChildText(".event-item__suptitle")
 	filmName := e.ChildText(".event-item__title")
 	details := e.ChildText(".event-item__details")
 	_ = details
 
-	film := models.Film{Title: filmName, Director: director}
+	film := cast.Film{Title: filmName, Director: director}
 
-	return models.Screening{
-		Date:  date,
-		Time:  time,
-		Film:  film,
-		Kino:  Ponrepo.Name,
-		Price: 0,
-	}
+	return cast.NewScreening(
+		film,
+		Ponrepo.Name,
+		date,
+		time,
+		0,
+	)
 }

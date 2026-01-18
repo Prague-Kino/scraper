@@ -3,25 +3,25 @@ package aero
 import (
 	"time"
 
+	"github.com/Prague-Kino/cast/cast"
 	utils "github.com/Prague-Kino/scraper/internal/parseutils"
-	"github.com/Prague-Kino/scraper/models"
 
 	"github.com/gocolly/colly/v2"
 )
 
 type AeroScraper struct{}
 
-func (AeroScraper) Kino() models.Kino {
+func (AeroScraper) Kino() cast.Kino {
 	return *Aero
 }
 
-func (AeroScraper) Register(c *colly.Collector, screenings *[]models.Screening) {
+func (AeroScraper) Register(c *colly.Collector, screenings *[]cast.Screening) {
 	c.OnHTML("#program .program", func(e *colly.HTMLElement) {
 		scrapeAeroProgram(e, screenings)
 	})
 }
 
-func scrapeAeroProgram(e *colly.HTMLElement, screenings *[]models.Screening) {
+func scrapeAeroProgram(e *colly.HTMLElement, screenings *[]cast.Screening) {
 	var screeningDate time.Time
 
 	// get dates
@@ -41,7 +41,7 @@ func scrapeAeroProgram(e *colly.HTMLElement, screenings *[]models.Screening) {
 }
 
 // Parses a single screening row and returns a Screening struct
-func parseScreening(row *colly.HTMLElement, date time.Time) models.Screening {
+func parseScreening(row *colly.HTMLElement, date time.Time) cast.Screening {
 	movieName := row.ChildText(".program__movie-name")
 	programHour := row.ChildText(".program__hour")
 	cinemaName := row.ChildText(".program__place--desktop")
@@ -53,8 +53,8 @@ func parseScreening(row *colly.HTMLElement, date time.Time) models.Screening {
 		price = 0
 	}
 
-	film := models.Film{Title: movieName}
-	return models.NewScreening(film, cinemaName, date, programHour, price)
+	film := cast.Film{Title: movieName}
+	return cast.NewScreening(film, cinemaName, date, programHour, price)
 }
 
 // <div #program> contains all the screening

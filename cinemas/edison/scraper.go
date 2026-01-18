@@ -3,19 +3,19 @@ package edison
 import (
 	"time"
 
+	"github.com/Prague-Kino/cast/cast"
 	utils "github.com/Prague-Kino/scraper/internal/parseutils"
-	"github.com/Prague-Kino/scraper/models"
 
 	"github.com/gocolly/colly/v2"
 )
 
 type EdisonScraper struct{}
 
-func (EdisonScraper) Kino() models.Kino {
+func (EdisonScraper) Kino() cast.Kino {
 	return Edison
 }
 
-func (EdisonScraper) Register(c *colly.Collector, screenings *[]models.Screening) {
+func (EdisonScraper) Register(c *colly.Collector, screenings *[]cast.Screening) {
 	currentDate := time.Now()
 
 	c.OnHTML(".program_table .line", func(e *colly.HTMLElement) {
@@ -23,7 +23,7 @@ func (EdisonScraper) Register(c *colly.Collector, screenings *[]models.Screening
 	})
 }
 
-func scrapeProgram(e *colly.HTMLElement, screenings *[]models.Screening, currentDate *time.Time) {
+func scrapeProgram(e *colly.HTMLElement, screenings *[]cast.Screening, currentDate *time.Time) {
 	// check if line is a date header
 	dateString := e.ChildText(".den")
 	if utils.NotEmpty(dateString) {
@@ -47,7 +47,7 @@ func processDate(dateString string, currentDate *time.Time) {
 }
 
 // Parses a single screening row and returns a Screening struct
-func parseScreening(e *colly.HTMLElement, date time.Time) models.Screening {
+func parseScreening(e *colly.HTMLElement, date time.Time) cast.Screening {
 	time := e.ChildText(".time")
 	movieName := e.ChildText(".name")
 	priceString := e.ChildText(".ticket")
@@ -57,8 +57,8 @@ func parseScreening(e *colly.HTMLElement, date time.Time) models.Screening {
 		price = 0
 	}
 
-	return models.NewScreening(
-		models.Film{Title: movieName},
+	return cast.NewScreening(
+		cast.Film{Title: movieName},
 		Edison.Name,
 		date,
 		time,
