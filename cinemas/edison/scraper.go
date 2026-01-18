@@ -3,18 +3,19 @@ package edison
 import (
 	"time"
 
-	"github.com/Prague-Kino/scraper/lib"
+	utils "github.com/Prague-Kino/scraper/internal/parseutils"
+	"github.com/Prague-Kino/scraper/models"
 
 	"github.com/gocolly/colly/v2"
 )
 
 type EdisonScraper struct{}
 
-func (EdisonScraper) Kino() lib.Kino {
+func (EdisonScraper) Kino() models.Kino {
 	return Edison
 }
 
-func (EdisonScraper) Register(c *colly.Collector, screenings *[]lib.Screening) {
+func (EdisonScraper) Register(c *colly.Collector, screenings *[]models.Screening) {
 	currentDate := time.Now()
 
 	c.OnHTML(".program_table .line", func(e *colly.HTMLElement) {
@@ -22,10 +23,10 @@ func (EdisonScraper) Register(c *colly.Collector, screenings *[]lib.Screening) {
 	})
 }
 
-func scrapeProgram(e *colly.HTMLElement, screenings *[]lib.Screening, currentDate *time.Time) {
+func scrapeProgram(e *colly.HTMLElement, screenings *[]models.Screening, currentDate *time.Time) {
 	// check if line is a date header
 	dateString := e.ChildText(".den")
-	if !lib.IsEmpty(dateString) {
+	if utils.NotEmpty(dateString) {
 		processDate(dateString, currentDate)
 		return
 	}
@@ -34,6 +35,8 @@ func scrapeProgram(e *colly.HTMLElement, screenings *[]lib.Screening, currentDat
 	*screenings = append(*screenings, screening)
 }
 
+// Parses a date string like Monday 5.1 into a time.Time object
+// and updates the currentDate pointer
 func processDate(dateString string, currentDate *time.Time) {
 	parsedDate, err := parseEdisonDate(dateString)
 	if err != nil {
@@ -43,18 +46,19 @@ func processDate(dateString string, currentDate *time.Time) {
 	*currentDate = parsedDate
 }
 
-func parseScreening(e *colly.HTMLElement, date time.Time) lib.Screening {
+// Parses a single screening row and returns a Screening struct
+func parseScreening(e *colly.HTMLElement, date time.Time) models.Screening {
 	time := e.ChildText(".time")
 	movieName := e.ChildText(".name")
 	priceString := e.ChildText(".ticket")
 
-	price, err := lib.CrownsToInt(priceString)
+	price, err := utils.CrownsToInt(priceString)
 	if err != nil {
 		price = 0
 	}
 
-	return lib.NewScreening(
-		lib.Film{Title: movieName},
+	return models.NewScreening(
+		models.Film{Title: movieName},
 		Edison.Name,
 		date,
 		time,

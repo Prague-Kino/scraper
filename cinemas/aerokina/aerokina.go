@@ -4,7 +4,7 @@
 package aero
 
 import (
-	"github.com/Prague-Kino/scraper/lib"
+	"github.com/Prague-Kino/scraper/models"
 )
 
 const (
@@ -19,8 +19,8 @@ var (
 	BigOko   = newAerokindaCinema("Big Oko")
 )
 
-func newAerokindaCinema(name string) *lib.Kino {
-	k := lib.Kino{
+func newAerokindaCinema(name string) *models.Kino {
+	k := models.Kino{
 		Name:       name,
 		BaseDomain: BASE_DOMAIN,
 		ProgramURL: BASE_PROGRAM_URL,

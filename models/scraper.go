@@ -1,6 +1,8 @@
-package lib
+package models
 
-import "github.com/gocolly/colly/v2"
+import (
+	"github.com/gocolly/colly/v2"
+)
 
 type CinemaScraper interface {
 	Kino() Kino
