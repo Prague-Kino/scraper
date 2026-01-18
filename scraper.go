@@ -3,13 +3,14 @@ package scraper
 import (
 	"fmt"
 
+	"github.com/Prague-Kino/cast/cast"
 	e "github.com/Prague-Kino/scraper/internal/errors"
 	m "github.com/Prague-Kino/scraper/models"
 	"github.com/gocolly/colly/v2"
 )
 
-func ScrapeCinema(scraper m.CinemaScraper) ([]m.Screening, error) {
-	var screenings []m.Screening
+func ScrapeCinema(scraper m.CinemaScraper) ([]cast.Screening, error) {
+	var screenings []cast.Screening
 	var err error
 
 	kino := scraper.Kino()
@@ -44,8 +45,8 @@ func ScrapeCinema(scraper m.CinemaScraper) ([]m.Screening, error) {
 	return screenings, nil
 }
 
-func ScrapeAllCinemas() ([]m.Screening, error) {
-	var screenings []m.Screening
+func ScrapeAllCinemas() ([]cast.Screening, error) {
+	var screenings []cast.Screening
 
 	for _, cinema := range AllCinemas {
 		s, err := ScrapeCinema(cinema)

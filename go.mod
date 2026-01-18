@@ -1,8 +1,11 @@
 module github.com/Prague-Kino/scraper
 
-go 1.25.1
+go 1.25.6
 
-require github.com/gocolly/colly/v2 v2.3.0
+require (
+	github.com/Prague-Kino/cast v0.0.0-20260118211812-734b0e58f5b8
+	github.com/gocolly/colly/v2 v2.3.0
+)
 
 require (
 	github.com/PuerkitoBio/goquery v1.11.0 // indirect

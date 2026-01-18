@@ -4,12 +4,12 @@
 package aero
 
 import (
-	"github.com/Prague-Kino/scraper/models"
+	"github.com/Prague-Kino/cast/cast"
 )
 
 const (
-	BASE_DOMAIN      = "www.kinoaero.cz"
-	BASE_PROGRAM_URL = "https://www.kinoaero.cz/en?cinema=1%2C2%2C9%2C3&sort=sort-by-data&hall=34%2C35%2C1%2C2%2C3%2C24&english-friendly=1"
+	BASE_DOMAIN = "www.kinoaero.cz"
+	PROGRAM_URL = "https://www.kinoaero.cz/en?cinema=1%2C2%2C9%2C3&sort=sort-by-data&hall=34%2C35%2C1%2C2%2C3%2C24&english-friendly=1"
 )
 
 var (
@@ -19,11 +19,6 @@ var (
 	BigOko   = newAerokindaCinema("Big Oko")
 )
 
-func newAerokindaCinema(name string) *models.Kino {
-	k := models.Kino{
-		Name:       name,
-		BaseDomain: BASE_DOMAIN,
-		ProgramURL: BASE_PROGRAM_URL,
-	}
-	return &k
+func newAerokindaCinema(name string) *cast.Kino {
+	return cast.NewKino(name, BASE_DOMAIN, PROGRAM_URL)
 }
