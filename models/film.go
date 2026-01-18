@@ -1,4 +1,4 @@
-package lib
+package models
 
 type Film struct {
 	Title    string

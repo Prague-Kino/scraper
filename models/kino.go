@@ -1,4 +1,4 @@
-package lib
+package models
 
 type Kino struct {
 	Name       string

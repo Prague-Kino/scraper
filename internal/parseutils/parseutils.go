@@ -1,4 +1,4 @@
-package lib
+package parseutils
 
 import (
 	"strconv"
@@ -26,4 +26,8 @@ func CrownsToInt(s string) (int, error) {
 
 func IsEmpty(s string) bool {
 	return len(strings.TrimSpace(s)) == 0
+}
+
+func NotEmpty(s string) bool {
+	return !IsEmpty(s)
 }
