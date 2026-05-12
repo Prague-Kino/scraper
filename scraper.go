@@ -3,7 +3,7 @@ package scraper
 import (
 	"fmt"
 
-	"github.com/Prague-Kino/cast/cast"
+	"github.com/Prague-Kino/cast"
 	e "github.com/Prague-Kino/scraper/internal/errors"
 	m "github.com/Prague-Kino/scraper/models"
 	"github.com/gocolly/colly/v2"
