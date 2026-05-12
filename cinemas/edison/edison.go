@@ -1,7 +1,7 @@
 package edison
 
 import (
-	"github.com/Prague-Kino/cast/cast"
+	"github.com/Prague-Kino/cast"
 )
 
 var Edison = cast.Kino{

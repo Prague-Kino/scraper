@@ -3,7 +3,7 @@ module github.com/Prague-Kino/scraper
 go 1.25.6
 
 require (
-	github.com/Prague-Kino/cast v0.0.0-20260118211812-734b0e58f5b8
+	github.com/Prague-Kino/cast v0.0.0-20260509214147-695ed62f8ecc
 	github.com/gocolly/colly/v2 v2.3.0
 )
 

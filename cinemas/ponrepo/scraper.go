@@ -3,7 +3,7 @@ package ponrepo
 import (
 	"time"
 
-	"github.com/Prague-Kino/cast/cast"
+	"github.com/Prague-Kino/cast"
 
 	"github.com/gocolly/colly/v2"
 )
