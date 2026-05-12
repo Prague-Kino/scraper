@@ -1,6 +1,6 @@
 package ponrepo
 
-import "github.com/Prague-Kino/cast/cast"
+import "github.com/Prague-Kino/cast"
 
 var Ponrepo = cast.Kino{
 	Name:       "Ponrepo",

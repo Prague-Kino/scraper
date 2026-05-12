@@ -3,7 +3,7 @@ package aero
 import (
 	"time"
 
-	"github.com/Prague-Kino/cast/cast"
+	"github.com/Prague-Kino/cast"
 	utils "github.com/Prague-Kino/scraper/internal/parseutils"
 
 	"github.com/gocolly/colly/v2"

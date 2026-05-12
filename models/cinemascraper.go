@@ -1,7 +1,7 @@
 package models
 
 import (
-	"github.com/Prague-Kino/cast/cast"
+	"github.com/Prague-Kino/cast"
 	"github.com/gocolly/colly/v2"
 )
 
