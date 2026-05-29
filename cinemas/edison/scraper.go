@@ -5,8 +5,15 @@ import (
 
 	"github.com/Prague-Kino/cast"
 	utils "github.com/Prague-Kino/scraper/internal/parseutils"
+	su "github.com/Prague-Kino/scraper/internal/stringutils"
 
 	"github.com/gocolly/colly/v2"
+)
+
+const (
+	TimeClass     = ".time"
+	FilmNameClass = ".name"
+	PriceClass    = ".ticket"
 )
 
 type EdisonScraper struct{}
@@ -26,7 +33,7 @@ func (EdisonScraper) Register(c *colly.Collector, screenings *[]cast.Screening) 
 func scrapeProgram(e *colly.HTMLElement, screenings *[]cast.Screening, currentDate *time.Time) {
 	// check if line is a date header
 	dateString := e.ChildText(".den")
-	if utils.NotEmpty(dateString) {
+	if su.NotEmpty(dateString) {
 		processDate(dateString, currentDate)
 		return
 	}
@@ -48,20 +55,24 @@ func processDate(dateString string, currentDate *time.Time) {
 
 // Parses a single screening row and returns a Screening struct
 func parseScreening(e *colly.HTMLElement, date time.Time) cast.Screening {
-	time := e.ChildText(".time")
-	movieName := e.ChildText(".name")
-	priceString := e.ChildText(".ticket")
+	time := e.ChildText(TimeClass)
+	movieName := e.ChildText(FilmNameClass)
+	priceString := e.ChildText(PriceClass)
 
 	price, err := utils.CrownsToInt(priceString)
 	if err != nil {
-		price = 0
+		price = 1
 	}
 
-	return cast.NewScreening(
-		cast.Film{Title: movieName},
-		Edison.Name,
-		date,
-		time,
-		price,
-	)
+	combinedDate, err := utils.CombineDateTime(date, time)
+	if err == nil {
+		date = combinedDate
+	}
+
+	return cast.Screening{
+		Film:  cast.Film{Title: movieName},
+		Kino:  Edison,
+		Date:  cast.PBTime{Time: date},
+		Price: price,
+	}
 }
