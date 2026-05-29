@@ -3,12 +3,10 @@ package parseutils
 import (
 	"strconv"
 	"strings"
-)
+	"time"
 
-// Removes extra spaces and linebreaks from a string
-func Squish(s string) string {
-	return strings.Join(strings.Fields(s), " ")
-}
+	"github.com/Prague-Kino/scraper/internal/errors"
+)
 
 // Converts a price string in crowns to an int
 //
@@ -24,10 +22,21 @@ func CrownsToInt(s string) (int, error) {
 	return value, nil
 }
 
-func IsEmpty(s string) bool {
-	return len(strings.TrimSpace(s)) == 0
-}
+// Add time (HH:MM) to a date.
+//
+// Expected format: 15:04
+func CombineDateTime(date time.Time, timeStr string) (time.Time, error) {
+	t, err := time.Parse("15:04", timeStr)
+	if err != nil {
+		return date, &errors.InvalidTimeFormatError{
+			InvalidTime: timeStr,
+		}
+	}
 
-func NotEmpty(s string) bool {
-	return !IsEmpty(s)
+	// Combine using the date's year/month/day and the parsed hour/minute
+	return time.Date(
+		date.Year(), date.Month(), date.Day(),
+		t.Hour(), t.Minute(), 0, 0,
+		date.Location(),
+	), nil
 }

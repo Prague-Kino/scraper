@@ -5,8 +5,16 @@ import (
 
 	"github.com/Prague-Kino/cast"
 	utils "github.com/Prague-Kino/scraper/internal/parseutils"
+	su "github.com/Prague-Kino/scraper/internal/stringutils"
 
 	"github.com/gocolly/colly/v2"
+)
+
+const (
+	MovieNameClass  = ".program__movie-name"
+	TimeClass       = ".program__hour"
+	CinemaNameClass = ".program__place--desktop"
+	PriceClass      = ".program__price form"
 )
 
 type AeroScraper struct{}
@@ -42,19 +50,31 @@ func scrapeAeroProgram(e *colly.HTMLElement, screenings *[]cast.Screening) {
 
 // Parses a single screening row and returns a Screening struct
 func parseScreening(row *colly.HTMLElement, date time.Time) cast.Screening {
-	movieName := row.ChildText(".program__movie-name")
-	programHour := row.ChildText(".program__hour")
-	cinemaName := row.ChildText(".program__place--desktop")
-	priceString := row.ChildText(".program__price form")
+	movieName := row.ChildText(MovieNameClass)
+	programHour := row.ChildText(TimeClass)
+	cinemaName := row.ChildText(CinemaNameClass)
+	priceString := row.ChildText(PriceClass)
 
-	cinemaName = filterCinemaName(utils.Squish(cinemaName))
+	cinemaName = filterCinemaName(su.Squish(cinemaName))
+	
 	price, err := utils.CrownsToInt(priceString)
 	if err != nil {
 		price = 0
 	}
 
+	combinedDate, err := utils.CombineDateTime(date, programHour)
+	if err == nil {
+		date = combinedDate
+	}
+
 	film := cast.Film{Title: movieName}
-	return cast.NewScreening(film, cinemaName, date, programHour, price)
+	screening := cast.Screening{
+		Film:  film,
+		Kino:  getKinoByName(cinemaName),
+		Date:  cast.PBTime{Time: date},
+		Price: price,
+	}
+	return screening
 }
 
 // <div #program> contains all the screening

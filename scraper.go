@@ -1,7 +1,7 @@
 package scraper
 
 import (
-	"fmt"
+	"log"
 
 	"github.com/Prague-Kino/cast"
 	e "github.com/Prague-Kino/scraper/internal/errors"
@@ -22,7 +22,7 @@ func ScrapeCinema(scraper m.CinemaScraper) ([]cast.Screening, error) {
 	scraper.Register(c, &screenings)
 
 	c.OnRequest(func(r *colly.Request) {
-		fmt.Println("Visiting ", kino.ProgramURL)
+		log.Println("Visiting ", kino.ProgramURL)
 	})
 
 	c.OnError(func(r *colly.Response, e error) {
@@ -30,7 +30,7 @@ func ScrapeCinema(scraper m.CinemaScraper) ([]cast.Screening, error) {
 	})
 
 	c.OnScraped(func(r *colly.Response) {
-		fmt.Printf("Scraping %s complete!\n", kino.BaseDomain)
+		log.Printf("Scraping %s complete!\n", kino.BaseDomain)
 	})
 
 	c.Visit(kino.ProgramURL)

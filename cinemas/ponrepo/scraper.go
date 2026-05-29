@@ -4,8 +4,16 @@ import (
 	"time"
 
 	"github.com/Prague-Kino/cast"
+	utils "github.com/Prague-Kino/scraper/internal/parseutils"
 
 	"github.com/gocolly/colly/v2"
+)
+
+const (
+	TimeClass      = ".event-item__date"
+	DirectorClass  = ".event-item__suptitle"
+	FilmTitleClass = ".event-item__title"
+	FilmDetails    = ".event-item__details"
 )
 
 type PonrepoScraper struct{}
@@ -29,19 +37,26 @@ func scrapeProgram(e *colly.HTMLElement, screenings *[]cast.Screening) {
 }
 
 func scrapeScreening(e *colly.HTMLElement, date time.Time) cast.Screening {
-	time := e.ChildText(".event-item__date")
-	director := e.ChildText(".event-item__suptitle")
-	filmName := e.ChildText(".event-item__title")
-	details := e.ChildText(".event-item__details")
+	time := e.ChildText(TimeClass)
+	director := e.ChildText(DirectorClass)
+	filmName := e.ChildText(FilmTitleClass)
+	details := e.ChildText(FilmDetails)
 	_ = details
 
-	film := cast.Film{Title: filmName, Director: director}
+	film := cast.Film{
+		Title: filmName,
+		Director: director,
+	}
 
-	return cast.NewScreening(
-		film,
-		Ponrepo.Name,
-		date,
-		time,
-		0,
-	)
+	combinedDate, err := utils.CombineDateTime(date, time)
+	if err == nil {
+		date = combinedDate
+	}
+
+	return cast.Screening{
+		Film:  film,
+		Kino:  Ponrepo,
+		Date:  cast.PBTime{Time: date},
+		Price: DefaultPrice,
+	}
 }

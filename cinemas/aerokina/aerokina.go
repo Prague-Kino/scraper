@@ -4,6 +4,8 @@
 package aero
 
 import (
+	"strings"
+
 	"github.com/Prague-Kino/cast"
 )
 
@@ -13,13 +15,30 @@ const (
 )
 
 var (
-	Aero       = newAerokinaCinema("Aero")
-	Svetozor   = newAerokinaCinema("Světozor")
-	Lucerna    = newAerokinaCinema("Lucerna")
-	BigOko     = newAerokinaCinema("Big Oko")
-	Pritomnost = newAerokinaCinema("Pritomnost")
+	Aero       = newAerokinaCinema("Kino Aero")
+	Svetozor   = newAerokinaCinema("Kino Světozor")
+	Lucerna    = newAerokinaCinema("Kino Lucerna")
+	BigOko     = newAerokinaCinema("Kino Big Oko")
+	Pritomnost = newAerokinaCinema("Kino Pritomnost")
 )
+
+var aerokinaMap = map[string]*cast.Kino{
+	"Aero":       Aero,
+	"Světozor":   Svetozor,
+	"Lucerna":    Lucerna,
+	"Bio Oko":    BigOko,
+	"Přítomnost": Pritomnost,
+}
 
 func newAerokinaCinema(name string) *cast.Kino {
 	return cast.NewKino(name, BASE_DOMAIN, PROGRAM_URL)
+}
+
+func getKinoByName(name string) cast.Kino {
+	kino, ok := aerokinaMap[strings.TrimSpace(name)]
+	if ok {
+		return *kino
+	}
+
+	return *Aero
 }
