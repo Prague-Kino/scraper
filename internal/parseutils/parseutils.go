@@ -13,7 +13,14 @@ import (
 // Example: "190 Kč" -> 190
 func CrownsToInt(s string) (int, error) {
 	normalised := strings.ToLower(s)
-	cleaned := strings.TrimSpace(strings.TrimSuffix(normalised, "kč"))
+	var cleaned string
+
+	for _, suffix := range []string{"kč", "czk"} {
+		if before, ok := strings.CutSuffix(normalised, suffix); ok {
+			cleaned = strings.TrimSpace(before)
+			break
+		}
+	}
 
 	value, err := strconv.Atoi(cleaned)
 	if err != nil {
