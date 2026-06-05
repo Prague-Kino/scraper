@@ -36,3 +36,17 @@ func AssertDate(t *testing.T, actual, expected cast.PBTime) {
 		actual.Time.Format("2006-01-02 15:04"),
 	)
 }
+
+func AssertScreenings(
+	t *testing.T,
+	expectedScreenings, screenings []cast.Screening,
+) {
+	t.Helper()
+	
+	for i, s := range screenings {
+		assert.Equal(t, expectedScreenings[i].Film.Title, s.Film.Title)
+		assert.Equal(t, expectedScreenings[i].Kino.Name, s.Kino.Name)
+		assert.Equal(t, expectedScreenings[i].Price, s.Price)
+		assert.Equal(t, expectedScreenings[i].Date, s.Date)
+	}
+}

@@ -45,13 +45,7 @@ func TestScrapeAeroProgram(t *testing.T) {
 	require.NoError(t, err)
 
 	require.Len(t, screenings, 2)
-
-	for i, s := range screenings {
-		assert.Equal(t, expectedScreenings[i].Film.Title, s.Film.Title)
-		assert.Equal(t, expectedScreenings[i].Kino.Name, s.Kino.Name)
-		assert.Equal(t, expectedScreenings[i].Price, s.Price)
-		assert.Equal(t, expectedScreenings[i].Date, s.Date)
-	}
+	testutil.AssertScreenings(t, expectedScreenings, screenings)
 }
 
 func TestScraperGetKino(t *testing.T) {
