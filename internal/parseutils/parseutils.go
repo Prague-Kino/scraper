@@ -11,6 +11,7 @@ import (
 // Converts a price string in crowns to an int
 //
 // Example: "190 Kč" -> 190
+// Example: "100 CZK" -> 100
 func CrownsToInt(s string) (int, error) {
 	normalised := strings.ToLower(s)
 	var cleaned string
