@@ -11,9 +11,17 @@ import (
 // Converts a price string in crowns to an int
 //
 // Example: "190 Kč" -> 190
+// Example: "100 CZK" -> 100
 func CrownsToInt(s string) (int, error) {
 	normalised := strings.ToLower(s)
-	cleaned := strings.TrimSpace(strings.TrimSuffix(normalised, "kč"))
+	var cleaned string
+
+	for _, suffix := range []string{"kč", "czk"} {
+		if before, ok := strings.CutSuffix(normalised, suffix); ok {
+			cleaned = strings.TrimSpace(before)
+			break
+		}
+	}
 
 	value, err := strconv.Atoi(cleaned)
 	if err != nil {
